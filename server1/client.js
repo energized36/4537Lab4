@@ -34,7 +34,20 @@ class Server1 {
                 resp.end();
             });
         }
+    }
 
+    insertPatients() {
+        // send POST request to server2 to insert patients
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "http://localhost:9999/api/v1/insert", true);
+        xhr.onload = function(response) {
+            if (xhr.status === 200) {
+                console.log(response.target.responseText);
+            } else {
+                console.error("Failed to insert patients");
+            }
+        };
+        xhr.send();
     }
 }
 

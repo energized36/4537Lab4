@@ -1,5 +1,6 @@
 import http from 'http';
 import url from 'url';
+import { insertPatients, runSelectQuery } from "./db.js";
 
 class Server2 {
     constructor() {    
@@ -15,8 +16,8 @@ class Server2 {
         // Handle GET req
         if (req.method == "GET" && req.url.startsWith("/api/v1/sql")) {
             const sql = url.parse(req.url, true).query;
-            resp.writeHead(200, {'Content-Type': 'text/plain'});
-            resp.write(sql);
+            resp.writeHead(200, {'Content-Type': 'application/json'});
+            resp.write(JSON.stringify(await runSelectQuery(sql.queryStatement)));
             resp.end();
             return;
         }
@@ -31,7 +32,7 @@ class Server2 {
             return;
         }
         
-        //
+        // Error
         resp.writeHead(500, {'Content-Type': 'text/plain'});
         resp.write('Internal Server Error');
         resp.end();
