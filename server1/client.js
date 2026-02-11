@@ -11,15 +11,16 @@ class Server1 {
 
     start() {
         this.server.listen(8888);
+        console.log('Server1 running on http://localhost:8888');
     }
 
     async handleRequest(req, resp){
         // parse request
         let params = url.parse(req.url, true);
+        const __filename = fileURLToPath(import.meta.url);
+        const __dirname = path.dirname(__filename);
         
         if (params.pathname === '/') {
-            const __filename = fileURLToPath(import.meta.url);
-            const __dirname = path.dirname(__filename);
             const filePath = path.join(__dirname, './index.html');
             
             fs.readFile(filePath, (err, data) => {
@@ -30,6 +31,22 @@ class Server1 {
                     return;
                 }
                 resp.writeHead(200, {'Content-Type': 'text/html'});
+                resp.write(data);
+                resp.end();
+            });
+        }
+        // serve browser-client.js file
+        else if (params.pathname === '/browser-client.js') {
+            const filePath = path.join(__dirname, './browser-client.js');
+            
+            fs.readFile(filePath, (err, data) => {
+                if (err) {
+                    resp.writeHead(404, {'Content-Type': 'text/plain'});
+                    resp.write('Not Found');
+                    resp.end();
+                    return;
+                }
+                resp.writeHead(200, {'Content-Type': 'application/javascript'});
                 resp.write(data);
                 resp.end();
             });

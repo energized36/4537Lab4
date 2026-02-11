@@ -3,18 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lab4</title>
+    <title>Lab4 - Patient Database</title>
+    <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
-    <form action="http://localhost:9999/api/v1/sql" method="GET">
-        <textarea type="text" name="queryStatement" id="queryText"></textarea>
-        <button type="submit">Submit</button>
-    </form>
+    <h1>Patient Database Manager</h1>
 
-    <form action="http://localhost:9999/api/v1/insert" method="POST">
-        <button>Insert</button>
-    </form>
+    <!-- Section 1: Insert Patients -->
+    <div class="section">
+        <h2>1. Insert Patients</h2>
+        <p>Click the button below to insert the following patient records into the database:</p>
+        <ul>
+            <li>Sara Brown (DOB: 1901-01-01)</li>
+            <li>John Smith (DOB: 1941-01-01)</li>
+            <li>Jack Ma (DOB: 1961-01-30)</li>
+            <li>Elon Musk (DOB: 1999-01-01)</li>
+        </ul>
+        <button id="insertBtn">Insert Patients</button>
+        <div id="insertResponse" class="response" style="display:none;">
+            <h3>Server Response:</h3>
+            <div id="insertResponseText"></div>
+        </div>
+    </div>
 
+    <!-- Section 2: Query Patients -->
+    <div class="section">
+        <h2>2. Run SQL Query</h2>
+        <p>Enter a SELECT query to retrieve patient data (read-only access):</p>
+        <textarea id="queryText" placeholder="Example: SELECT * FROM patient"></textarea>
+        <button id="queryBtn">Submit Query</button>
+        <div id="queryResponse" class="response" style="display:none;">
+            <h3>Query Results:</h3>
+            <pre id="queryResponseText"></pre>
+        </div>
+    </div>
+
+    <script src="browser-client.js"></script>
 </body>
-    <script src="./client.js"></script>
 </html>

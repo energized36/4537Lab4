@@ -5,15 +5,43 @@ import { insertPatients, runSelectQuery } from "./db.js";
 class Server2 {
     constructor() {    
         this.server2 = http.createServer(this.handleRequest.bind(this));
-        // assign db to object
+        this.allowedOrigins = [
+            'http://localhost:8888',
+            'http://127.0.0.1:5500',
+            'http://localhost:5500'
+        ];
     }
 
     start() {
         this.server2.listen(9999);
+        console.log('Server2 running on http://localhost:9999');
+    }
+
+    // add CORS headers to allow cross-origin requests from Server1
+    setCORSHeaders(req, resp) {
+        const origin = req.headers.origin;
+        
+        if (this.allowedOrigins.includes(origin)) {
+            resp.setHeader('Access-Control-Allow-Origin', origin);
+        } else {
+            // default to localhost:8888 if origin not in list
+            resp.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
+        }
+        
+        resp.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+        resp.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     }
 
     async handleRequest(req, resp) {
-        // Handle GET req
+        this.setCORSHeaders(req, resp);
+
+        if (req.method === 'OPTIONS') {
+            resp.writeHead(204);
+            resp.end();
+            return;
+        }
+
+        // handle GET req
         if (req.method == "GET" && req.url.startsWith("/api/v1/sql")) {
             const sql = url.parse(req.url, true).query;
             resp.writeHead(200, {'Content-Type': 'application/json'});
@@ -22,9 +50,8 @@ class Server2 {
             return;
         }
 
-        // Handle POST req
+        // handle POST req
         else if (req.method == "POST" && req.url === "/api/v1/insert") {
-            // Insert patients
             await insertPatients();
             resp.writeHead(200, {'Content-Type': 'text/plain'});
             resp.write("inserted patients");
@@ -32,7 +59,6 @@ class Server2 {
             return;
         }
         
-        // Error
         resp.writeHead(500, {'Content-Type': 'text/plain'});
         resp.write('Internal Server Error');
         resp.end();
