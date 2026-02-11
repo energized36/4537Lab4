@@ -5,7 +5,7 @@ export const writerPool = mysql.createPool({
   host: process.env.DB_HOST,
   user: "lab4_writer",
   password: "strongpassword",
-  database: "lab4"
+  database: "railway"
 });
 
 // Creare connection to sql db for reading
@@ -13,7 +13,7 @@ export const readerPool = mysql.createPool({
   host: process.env.DB_HOST,
   user: "lab4_reader",
   password: "strongpassword",
-  database: "lab4"
+  database: "railway"
 });
 
 // Ensure patient table exists before inserting patients
