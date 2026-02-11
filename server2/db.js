@@ -1,19 +1,21 @@
 import mysql from "mysql2/promise";
 
 // Create connection to sql db for writing 
-export const writerPool = mysql.createPool({
+const writerPool = mysql.createPool({
   host: process.env.DB_HOST,
-  user: "lab4_writer",
-  password: "strongpassword",
-  database: "railway"
+  port: process.env.DB_PORT,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASS,
+  database: process.env.DB_NAME
 });
 
 // Creare connection to sql db for reading
-export const readerPool = mysql.createPool({
+const readerPool = mysql.createPool({
   host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
   user: "lab4_reader",
   password: "strongpassword",
-  database: "railway"
+  database: process.env.DB_NAME
 });
 
 // Ensure patient table exists before inserting patients
