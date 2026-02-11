@@ -13,8 +13,8 @@ class Server2 {
     }
 
     start() {
-        this.server2.listen(getenv('PORT'));
-        console.log(`Server2 running on PORT ${getenv('PORT')}`);
+        this.server2.listen(process.env.PORT);
+        console.log(`Server2 running on PORT ${process.env.PORT}`);
     }
 
     // add CORS headers to allow cross-origin requests from Server1
@@ -25,7 +25,7 @@ class Server2 {
             resp.setHeader('Access-Control-Allow-Origin', origin);
         } else {
             // default to localhost:8888 if origin not in list
-            resp.setHeader('Access-Control-Allow-Origin', `http://localhost:${getenv('FALLBACK_PORT')}`);
+            resp.setHeader('Access-Control-Allow-Origin', `http://localhost:${process.env.FALLBACK_PORT}`);
         }
         
         resp.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
