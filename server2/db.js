@@ -1,19 +1,22 @@
 import mysql from "mysql2/promise";
 
+// Create connection to sql db for writing 
 export const writerPool = mysql.createPool({
-  host: "localhost",
+  host: process.env.DB_HOST,
   user: "lab4_writer",
   password: "strongpassword",
   database: "lab4"
 });
 
+// Creare connection to sql db for reading
 export const readerPool = mysql.createPool({
-  host: "localhost",
+  host: process.env.DB_HOST,
   user: "lab4_reader",
   password: "strongpassword",
   database: "lab4"
 });
 
+// Ensure patient table exists before inserting patients
 async function ensureTableExists() {
   await writerPool.query(`
     CREATE TABLE IF NOT EXISTS patient (
