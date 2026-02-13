@@ -25,7 +25,7 @@ class Server2 {
             resp.setHeader('Access-Control-Allow-Origin', origin);
         } else {
             // default to localhost:8888 if origin not in list
-            resp.setHeader('Access-Control-Allow-Origin', `http://localhost:${process.env.FALLBACK_PORT}`);
+            resp.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
         }
         
         resp.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -36,7 +36,7 @@ class Server2 {
         this.setCORSHeaders(req, resp);
 
         if (req.method === 'OPTIONS') {
-            resp.writeHead(204);
+            resp.writeHead(204, {});
             resp.end();
             return;
         }
