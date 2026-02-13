@@ -5,6 +5,11 @@ import { insertPatients, runSelectQuery } from "./db.js";
 class Server2 {
     constructor() {    
         this.server2 = http.createServer(this.handleRequest.bind(this));
+        this.allowedOrigins = [
+            'http://localhost:8888',
+            'http://127.0.0.1:5500',
+            'http://localhost:5500'
+        ];
     }
 
     start() {
@@ -14,7 +19,15 @@ class Server2 {
 
     // add CORS headers to allow cross-origin requests from Server1
     setCORSHeaders(req, resp) {
-        resp.setHeader('Access-Control-Allow-Origin', '*');
+        const origin = req.headers.origin;
+        
+        if (this.allowedOrigins.includes(origin)) {
+            resp.setHeader('Access-Control-Allow-Origin', origin);
+        } else {
+            // default to localhost:8888 if origin not in list
+            resp.setHeader('Access-Control-Allow-Origin', `http://localhost:${process.env.FALLBACK_PORT}`);
+        }
+        
         resp.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
         resp.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     }
