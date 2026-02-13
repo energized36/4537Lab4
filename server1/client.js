@@ -11,7 +11,7 @@ class Server1 {
 
     start() {
         this.server.listen(8888);
-        console.log('Server1 running on http://localhost:8888');
+        console.log('Server1 running on port 8888');
     }
 
     async handleRequest(req, resp){
@@ -20,9 +20,9 @@ class Server1 {
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = path.dirname(__filename);
         
+        // serve index.html file
         if (params.pathname === '/') {
             const filePath = path.join(__dirname, './index.html');
-            
             fs.readFile(filePath, (err, data) => {
                 if (err) {
                     resp.writeHead(500, {'Content-Type': 'text/plain'});
@@ -35,6 +35,7 @@ class Server1 {
                 resp.end();
             });
         }
+
         // serve browser-client.js file
         else if (params.pathname === '/browser-client.js') {
             const filePath = path.join(__dirname, './browser-client.js');
@@ -53,19 +54,19 @@ class Server1 {
         }
     }
 
-    insertPatients() {
-        // send POST request to server2 to insert patients
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "http://localhost:9999/api/v1/insert", true);
-        xhr.onload = function(response) {
-            if (xhr.status === 200) {
-                console.log(response.target.responseText);
-            } else {
-                console.error("Failed to insert patients");
-            }
-        };
-        xhr.send();
-    }
+    // // send POST request to server2 to insert patients
+    // insertPatients() {
+    //     const xhr = new XMLHttpRequest();
+    //     xhr.open("POST", "https://four537lab4-vg9m.onrender.com/api/v1/insert", true);
+    //     xhr.onload = function(response) {
+    //         if (xhr.status === 200) {
+    //             console.log(response.target.responseText);
+    //         } else {
+    //             console.error("Failed to insert patients");
+    //         }
+    //     };
+    //     xhr.send();
+    // }
 }
 
 const server1 = new Server1();

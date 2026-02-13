@@ -7,7 +7,7 @@ class PatientDBClient {
         this.insertResponseText = null;
         this.queryResponse = null;
         this.queryResponseText = null;
-        this.server2URL = 'http://localhost:9999';
+        this.server2URL = 'https://four537lab4-vg9m.onrender.com';
     }
 
     // initialize the client and set up event listeners
