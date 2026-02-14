@@ -10,7 +10,7 @@ class Server2 {
             'http://localhost:8888',
             'http://127.0.0.1:5500',
             'http://localhost:5500',
-            'https://four537lab4-server1.onrender.com/'
+            'https://four537lab4-server1.onrender.com'
         ];
     }
 
@@ -24,14 +24,10 @@ class Server2 {
     setCORSHeaders(req, resp) {
         const origin = req.headers.origin;
         
-        // allow requests from allowed origins, default to localhost:8888 if origin not in list
+        // allow requests from allowed origins
         if (this.allowedOrigins.includes(origin)) {
             resp.setHeader('Access-Control-Allow-Origin', origin);
-        } else {
-            // default to localhost:8888 if origin not in list
-            resp.setHeader('Access-Control-Allow-Origin', 'http://localhost:8888');
         }
-        
         resp.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
         resp.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     }
