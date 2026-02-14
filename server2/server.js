@@ -24,12 +24,12 @@ class Server2 {
   // add CORS headers to allow cross-origin requests from Server1
   setCORSHeaders(req, resp) {
     const origin = req.headers.origin;
+    console.log("Incoming Origin:", req.headers.origin);
 
     // allow requests from allowed origins
-    // if (this.allowedOrigins.includes(origin)) {
-    //   resp.setHeader("Access-Control-Allow-Origin", origin);
-    // }
-    resp.setHeader("Access-Control-Allow-Origin", origin);
+    if (this.allowedOrigins.includes(origin)) {
+      resp.setHeader("Access-Control-Allow-Origin", origin);
+    }
     resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
   }
