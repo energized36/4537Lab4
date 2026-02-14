@@ -26,9 +26,10 @@ class Server2 {
     const origin = req.headers.origin;
 
     // allow requests from allowed origins
-    if (this.allowedOrigins.includes(origin)) {
-      resp.setHeader("Access-Control-Allow-Origin", origin);
-    }
+    // if (this.allowedOrigins.includes(origin)) {
+    //   resp.setHeader("Access-Control-Allow-Origin", origin);
+    // }
+    resp.setHeader("Access-Control-Allow-Origin", origin);
     resp.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
     resp.setHeader("Access-Control-Allow-Headers", "Content-Type");
   }
@@ -65,7 +66,7 @@ class Server2 {
         await insertPatients();
 
         resp.writeHead(200, { "Content-Type": "text/plain" });
-        return resp.end(STRINGS.INSERTED_SUCCESS);
+        return resp.end(STRINGS.INSERT_SUCCESS);
       } catch (error) {
         resp.writeHead(400, { "Content-Type": "application/json" });
         return resp.end(
