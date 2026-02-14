@@ -9,7 +9,8 @@ class Server2 {
         this.allowedOrigins = [
             'http://localhost:8888',
             'http://127.0.0.1:5500',
-            'http://localhost:5500'
+            'http://localhost:5500',
+            'https://four537lab4-server1.onrender.com/'
         ];
     }
 
