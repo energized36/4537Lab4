@@ -1,7 +1,7 @@
 import http from "http";
 import url from "url";
 import { insertPatients, runSelectQuery } from "./db.js";
-import STRINGS from './lang/messages/en/strings.js';
+import STRINGS from "./lang/messages/en/strings.js";
 
 class Server2 {
   // initialize server and allowed origins for CORS
@@ -37,7 +37,6 @@ class Server2 {
   // handle incoming requests
   async handleRequest(req, resp) {
     this.setCORSHeaders(req, resp);
-    console.log("Incoming Origin:", req.headers.origin);
 
     // handle preflight OPTIONS request
     if (req.method === "OPTIONS") {
@@ -46,17 +45,21 @@ class Server2 {
     }
 
     // handle GET req
-    if (req.method == "GET" && req.url.startsWith("/api/v1/sql")) {
+    if (req.method === "GET" && req.url.startsWith("/api/v1/sql")) {
       try {
         const sql = url.parse(req.url, true).query;
-        resp.writeHead(200, { "Content-Type": "application/json" });
+
         const result = await runSelectQuery(sql.queryStatement);
-        resp.write(JSON.stringify(result));
-        return resp.end();
+
+        resp.writeHead(200, { "Content-Type": "application/json" });
+        return resp.end(JSON.stringify(result));
       } catch (error) {
         resp.writeHead(400, { "Content-Type": "application/json" });
-        resp.write(JSON.stringify({ error: error.message }));
-        return resp.end();
+        return resp.end(
+          JSON.stringify({
+            error: error.sqlMessage || error.message,
+          }),
+        );
       }
     }
 
