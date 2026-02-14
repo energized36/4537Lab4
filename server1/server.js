@@ -10,8 +10,8 @@ class Server1 {
     }
 
     start() {
-        this.server.listen(8888);
-        console.log('Server1 running on port 8888');
+        this.server.listen(process.env.SERVER1_PORT);
+        console.log(`Server1 running on port ${process.env.SERVER1_PORT}`);
     }
 
     async handleRequest(req, resp){
@@ -55,18 +55,18 @@ class Server1 {
 
         // serve style.css file
         else if (params.pathname === '/styles/style.css') {
-        const filePath = path.join(__dirname, './styles/style.css');
+            const filePath = path.join(__dirname, './styles/style.css');
 
-        fs.readFile(filePath, (err, data) => {
-            if (err) {
-                resp.writeHead(404, {'Content-Type': 'text/plain'});
-                return resp.end('Not Found');
-            }
+            fs.readFile(filePath, (err, data) => {
+                if (err) {
+                    resp.writeHead(404, {'Content-Type': 'text/plain'});
+                    return resp.end('Not Found');
+                }
 
-            resp.writeHead(200, {'Content-Type': 'text/css'});
-            resp.end(data);
-        });
-    }
+                resp.writeHead(200, {'Content-Type': 'text/css'});
+                resp.end(data);
+            });
+        }
 
     }
 }

@@ -15,8 +15,8 @@ class Server2 {
 
     // start backend server on specified port
     start() {
-        this.server2.listen(process.env.PORT);
-        console.log(`Server2 running on PORT ${process.env.PORT}`);
+        this.server2.listen(process.env.SERVER2_PORT);
+        console.log(`Server2 running on PORT ${process.env.SERVER2_PORT}`);
     }
 
     // add CORS headers to allow cross-origin requests from Server1
