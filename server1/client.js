@@ -1,3 +1,5 @@
+import STRINGS from '../lang/messages/en/strings.js';
+
 class PatientDBClient {
     constructor() {
         this.insertBtn = null;
@@ -32,7 +34,7 @@ class PatientDBClient {
     async handleInsert(event) {
         try {
             // Show loading state
-            this.insertResponseText.innerHTML = 'Inserting patients...';
+            this.insertResponseText.innerHTML = STRINGS.LOADING_STATE;
             this.insertResponse.style.display = 'block';
             this.insertResponse.className = 'response';
 
@@ -49,12 +51,12 @@ class PatientDBClient {
         const query = this.queryTextArea.value.trim();
 
         if (!query) {
-            alert('Please enter a SQL query');
+            alert(STRINGS.INSERT_PROMPT);
             return;
         }
 
         try {
-            this.queryResponseText.textContent = 'Executing query...';
+            this.queryResponseText.textContent = STRINGS.INSERT_LOADING;
             this.queryResponse.style.display = 'block';
             this.queryResponse.className = 'response';
 
@@ -62,6 +64,11 @@ class PatientDBClient {
             const data = await response.json();
             this.displayQueryResponse(data);
         } catch (error) {
+            if (response.ok === false) {
+                console.log(data);                
+                this.displayQueryError(data.error || 'Unknown error occurred');
+                return;
+            }
             this.displayQueryError(error.message);
         }
     }
