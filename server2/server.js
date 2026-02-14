@@ -39,8 +39,7 @@ class Server2 {
         // handle preflight OPTIONS request
         if (req.method === 'OPTIONS') {
             resp.writeHead(200, {'Content-Type': 'text/plain'});
-            resp.end();
-            return;
+            return resp.end();
         }
 
         // handle GET req
@@ -48,28 +47,37 @@ class Server2 {
             try {
                 const sql = url.parse(req.url, true).query;
                 resp.writeHead(200, {'Content-Type': 'application/json'});
-                resp.write(JSON.stringify(await runSelectQuery(sql.queryStatement)));
-                resp.end();
+                const result = await runSelectQuery(sql.queryStatement)
+                resp.write(JSON.stringify(result));
+                return resp.end();
             } catch (error) {
                 resp.writeHead(400, {'Content-Type': 'application/json'});
                 resp.write(JSON.stringify({ error: error.message }));
-                resp.end();
+                return resp.end();
             }
         }
 
         // handle POST req
-        else if (req.method == "POST" && req.url === "/api/v1/insert") {
-            await insertPatients();
-            resp.writeHead(200, {'Content-Type': 'text/plain'});
-            resp.write("inserted patients");
-            resp.end();
-            return;
-        }
+else if (req.method == "POST" && req.url === "/api/v1/insert") {
+    try {
+        await insertPatients();
+
+        resp.writeHead(200, {'Content-Type': 'text/plain'});
+        return resp.end("inserted patients");
+
+    } catch (error) {
+        resp.writeHead(400, {'Content-Type': 'application/json'});
+        return resp.end(JSON.stringify({
+            error: error.sqlMessage || error.message
+        }));
+    }
+}
+
         
         // handle unknown routes
         resp.writeHead(500, {'Content-Type': 'text/plain'});
         resp.write('Internal Server Error');
-        resp.end();
+        return resp.end();
     }
 }
 
