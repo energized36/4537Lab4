@@ -2,8 +2,6 @@ import http from "http";
 import url from "url";
 import { insertPatients, runSelectQuery } from "./db.js";
 import STRINGS from './lang/messages/en/strings.js';
-import dotenv from 'dotenv';
-dotenv.config();
 
 class Server2 {
   // initialize server and allowed origins for CORS

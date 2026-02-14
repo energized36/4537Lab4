@@ -1,6 +1,4 @@
 import mysql from "mysql2/promise";
-import dotenv from 'dotenv';
-dotenv.config();
 
 // Create connection to sql db for writing 
 const writerPool = mysql.createPool({

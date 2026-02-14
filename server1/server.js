@@ -4,8 +4,6 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import STRINGS from './lang/messages/en/strings.js';
-import dotenv from 'dotenv';
-dotenv.config();
 
 class Server1 {
     // initialize server and allowed origins for CORS
