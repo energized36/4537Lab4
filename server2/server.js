@@ -3,6 +3,7 @@ import url from 'url';
 import { insertPatients, runSelectQuery } from "./db.js";
 
 class Server2 {
+    // initialize server and allowed origins for CORS
     constructor() {    
         this.server2 = http.createServer(this.handleRequest.bind(this));
         this.allowedOrigins = [
@@ -12,6 +13,7 @@ class Server2 {
         ];
     }
 
+    // start backend server on specified port
     start() {
         this.server2.listen(process.env.PORT);
         console.log(`Server2 running on PORT ${process.env.PORT}`);
@@ -21,6 +23,7 @@ class Server2 {
     setCORSHeaders(req, resp) {
         const origin = req.headers.origin;
         
+        // allow requests from allowed origins, default to localhost:8888 if origin not in list
         if (this.allowedOrigins.includes(origin)) {
             resp.setHeader('Access-Control-Allow-Origin', origin);
         } else {
@@ -32,9 +35,11 @@ class Server2 {
         resp.setHeader('Access-Control-Allow-Headers', 'Content-Type');
     }
 
+    // handle incoming requests
     async handleRequest(req, resp) {
         this.setCORSHeaders(req, resp);
 
+        // handle preflight OPTIONS request
         if (req.method === 'OPTIONS') {
             resp.writeHead(200, {'Content-Type': 'text/plain'});
             resp.end();
@@ -59,6 +64,7 @@ class Server2 {
             return;
         }
         
+        // handle unknown routes
         resp.writeHead(500, {'Content-Type': 'text/plain'});
         resp.write('Internal Server Error');
         resp.end();
