@@ -63,12 +63,12 @@ class PatientDBClient {
             const response = await this.sendQueryRequest(query);
             const data = await response.json();
 
-            if (!response.ok) {
+            if (response.status === 400) {
                 throw new Error(data.error || 'Unknown error');
             }
            
             this.displayQueryResponse(data);
-            
+
         } catch (error) {
             this.displayQueryError(error.message);
         }
