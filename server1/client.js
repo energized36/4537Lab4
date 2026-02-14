@@ -64,12 +64,10 @@ class PatientDBClient {
             const data = await response.json();
             this.displayQueryResponse(data);
         } catch (error) {
-            if (response.ok === false) {
-                console.log(data);                
-                this.displayQueryError(data.error || 'Unknown error occurred');
-                return;
+            if (!response.ok) {
+                throw new Error(`Server responded with status ${data.error || response.status}`);
             }
-            this.displayQueryError(error.message);
+            this.displayQueryError(data);
         }
     }
 

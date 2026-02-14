@@ -45,11 +45,16 @@ class Server2 {
 
         // handle GET req
         if (req.method == "GET" && req.url.startsWith("/api/v1/sql")) {
-            const sql = url.parse(req.url, true).query;
-            resp.writeHead(200, {'Content-Type': 'application/json'});
-            resp.write(JSON.stringify(await runSelectQuery(sql.queryStatement)));
-            resp.end();
-            return;
+            try {
+                const sql = url.parse(req.url, true).query;
+                resp.writeHead(200, {'Content-Type': 'application/json'});
+                resp.write(JSON.stringify(await runSelectQuery(sql.queryStatement)));
+                resp.end();
+            } catch (error) {
+                resp.writeHead(400, {'Content-Type': 'application/json'});
+                resp.write(JSON.stringify({ error: error.message }));
+                resp.end();
+            }
         }
 
         // handle POST req
