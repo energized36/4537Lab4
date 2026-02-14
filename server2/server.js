@@ -1,6 +1,8 @@
 import http from "http";
 import url from "url";
 import { insertPatients, runSelectQuery } from "./db.js";
+import dotenv from 'dotenv';
+dotenv.config();
 
 class Server2 {
   // initialize server and allowed origins for CORS
@@ -35,6 +37,7 @@ class Server2 {
   // handle incoming requests
   async handleRequest(req, resp) {
     this.setCORSHeaders(req, resp);
+    console.log("Incoming Origin:", req.headers.origin);
 
     // handle preflight OPTIONS request
     if (req.method === "OPTIONS") {
