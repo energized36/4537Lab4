@@ -61,7 +61,13 @@ class PatientDBClient {
             this.queryResponse.className = 'response';
 
             const response = await this.sendQueryRequest(query);
+
+            console.log("Status:", response.status);
+            console.log("OK:", response.ok);
+
             const data = await response.json();
+
+
 
             if (response.status === 400) {
                 throw new Error(data.error || 'Unknown error');

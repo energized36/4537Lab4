@@ -1,7 +1,7 @@
 import http from "http";
 import url from "url";
 import { insertPatients, runSelectQuery } from "./db.js";
-import STRINGS from "./lang/messages/en/strings.js";
+import STRINGS2 from "./lang/messages/en/strings2.js";
 
 class Server2 {
   // initialize server and allowed origins for CORS
@@ -48,9 +48,7 @@ class Server2 {
     if (req.method === "GET" && req.url.startsWith("/api/v1/sql")) {
       try {
         const sql = url.parse(req.url, true).query;
-
         const result = await runSelectQuery(sql.queryStatement);
-
         resp.writeHead(200, { "Content-Type": "application/json" });
         return resp.end(JSON.stringify(result));
       } catch (error) {
@@ -69,12 +67,12 @@ class Server2 {
         await insertPatients();
 
         resp.writeHead(200, { "Content-Type": "text/plain" });
-        return resp.end(STRINGS.INSERT_SUCCESS);
+        return resp.end(STRINGS2.INSERT_SUCCESS);
       } catch (error) {
         resp.writeHead(400, { "Content-Type": "application/json" });
         return resp.end(
           JSON.stringify({
-            error: error.sqlMessage || error.message,
+            error: error.sqlMessage || STRINGS2.INSERT_FAILURE,
           }),
         );
       }
@@ -82,7 +80,7 @@ class Server2 {
 
     // handle unknown routes
     resp.writeHead(500, { "Content-Type": "text/plain" });
-    resp.write(STRINGS.SERVER_ERROR);
+    resp.write(STRINGS2.SERVER_ERROR);
     return resp.end();
   }
 }
