@@ -1,4 +1,4 @@
-import STRINGS from '../lang/messages/en/strings.js';
+import STRINGS from './lang/messages/en/strings.js';
 
 class PatientDBClient {
     constructor() {
@@ -64,10 +64,7 @@ class PatientDBClient {
             const data = await response.json();
             this.displayQueryResponse(data);
         } catch (error) {
-            if (!response.ok) {
-                throw new Error(`Server responded with status ${data.error || response.status}`);
-            }
-            this.displayQueryError(data);
+            this.displayQueryError(error);
         }
     }
 

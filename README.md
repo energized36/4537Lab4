@@ -10,6 +10,8 @@ This lab demonstrates executing SQL queries using a two-server architecture:
 
 ## 📁 Project Structure
 ```
+
+
 server1/
 ├── index.html
 ├── client.js
