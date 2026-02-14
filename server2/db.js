@@ -4,7 +4,7 @@ import mysql from "mysql2/promise";
 const writerPool = mysql.createPool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
-  user: process.env.DB_USER,
+  user: process.env.DB_WRITER_USER,
   password: process.env.DB_PASS,
   database: process.env.DB_NAME
 });
@@ -13,8 +13,8 @@ const writerPool = mysql.createPool({
 const readerPool = mysql.createPool({
   host: process.env.DB_HOST,
   port: process.env.DB_PORT,
-  user: process.env.DB_USER2,
-  password: process.env.DB_PASS2,
+  user: process.env.DB_READER_USER,
+  password: process.env.DB_PASS,
   database: process.env.DB_NAME
 });
 

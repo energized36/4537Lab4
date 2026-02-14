@@ -1,73 +1,108 @@
-import http from 'http';
-import url from "url";
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-class Server1 {
+class PatientDBClient {
     constructor() {
-        this.server = http.createServer(this.handleRequest.bind(this));
+        this.insertBtn = null;
+        this.queryBtn = null;
+        this.queryTextArea = null;
+        this.insertResponse = null;
+        this.insertResponseText = null;
+        this.queryResponse = null;
+        this.queryResponseText = null;
+        this.server2URL = 'https://four537lab4-vg9m.onrender.com';
     }
 
-    start() {
-        this.server.listen(8888);
-        console.log('Server1 running on port 8888');
+    // initialize the client and set up event listeners
+    init() {
+        this.insertBtn = document.getElementById('insertBtn');
+        this.queryBtn = document.getElementById('queryBtn');
+        this.queryTextArea = document.getElementById('queryText');
+        this.insertResponse = document.getElementById('insertResponse');
+        this.insertResponseText = document.getElementById('insertResponseText');
+        this.queryResponse = document.getElementById('queryResponse');
+        this.queryResponseText = document.getElementById('queryResponseText');
+
+        this.setupEventListeners();
     }
 
-    async handleRequest(req, resp){
-        // parse request
-        let params = url.parse(req.url, true);
-        const __filename = fileURLToPath(import.meta.url);
-        const __dirname = path.dirname(__filename);
-        
-        // serve index.html file
-        if (params.pathname === '/') {
-            const filePath = path.join(__dirname, './index.html');
-            fs.readFile(filePath, (err, data) => {
-                if (err) {
-                    resp.writeHead(500, {'Content-Type': 'text/plain'});
-                    resp.write('Internal Server Error');
-                    resp.end();
-                    return;
-                }
-                resp.writeHead(200, {'Content-Type': 'text/html'});
-                resp.write(data);
-                resp.end();
-            });
-        }
+    setupEventListeners() {
+        this.insertBtn.addEventListener('click', (e) => this.handleInsert(e));
+        this.queryBtn.addEventListener('click', (e) => this.handleQuery(e));
+    }
 
-        // serve browser-client.js file
-        else if (params.pathname === '/browser-client.js') {
-            const filePath = path.join(__dirname, './browser-client.js');
-            
-            fs.readFile(filePath, (err, data) => {
-                if (err) {
-                    resp.writeHead(404, {'Content-Type': 'text/plain'});
-                    resp.write('Not Found');
-                    resp.end();
-                    return;
-                }
-                resp.writeHead(200, {'Content-Type': 'application/javascript'});
-                resp.write(data);
-                resp.end();
-            });
+    // handle insert button click
+    async handleInsert(event) {
+        try {
+            // Show loading state
+            this.insertResponseText.innerHTML = 'Inserting patients...';
+            this.insertResponse.style.display = 'block';
+            this.insertResponse.className = 'response';
+
+            const response = await this.sendInsertRequest();
+            const data = await response.text();
+            this.displayInsertResponse(data);
+        } catch (error) {
+            this.displayInsertError(error.message);
         }
     }
 
-    // // send POST request to server2 to insert patients
-    // insertPatients() {
-    //     const xhr = new XMLHttpRequest();
-    //     xhr.open("POST", "https://four537lab4-vg9m.onrender.com/api/v1/insert", true);
-    //     xhr.onload = function(response) {
-    //         if (xhr.status === 200) {
-    //             console.log(response.target.responseText);
-    //         } else {
-    //             console.error("Failed to insert patients");
-    //         }
-    //     };
-    //     xhr.send();
-    // }
+    // handle query button click
+    async handleQuery(event) {
+        const query = this.queryTextArea.value.trim();
+
+        if (!query) {
+            alert('Please enter a SQL query');
+            return;
+        }
+
+        try {
+            this.queryResponseText.textContent = 'Executing query...';
+            this.queryResponse.style.display = 'block';
+            this.queryResponse.className = 'response';
+
+            const response = await this.sendQueryRequest(query);
+            const data = await response.json();
+            this.displayQueryResponse(data);
+        } catch (error) {
+            this.displayQueryError(error.message);
+        }
+    }
+
+    // send POST request to insert patients
+    async sendInsertRequest() {
+        const url = `${this.server2URL}/api/v1/insert`;
+        return await fetch(url, {
+            method: 'POST'
+        });
+    }
+
+    // send GET request with SQL query
+    async sendQueryRequest(query) {
+        const url = `${this.server2URL}/api/v1/sql?queryStatement=${encodeURIComponent(query)}`;
+        return await fetch(url);
+    }
+
+    displayInsertResponse(data) {
+        this.insertResponseText.innerHTML = `<strong>Success:</strong> ${data}`;
+        this.insertResponse.className = 'response success';
+    }
+
+    displayInsertError(errorMessage) {
+        this.insertResponseText.innerHTML = `<strong>Error:</strong> ${errorMessage}`;
+        this.insertResponse.className = 'response error';
+    }
+
+    displayQueryResponse(data) {
+        this.queryResponseText.textContent = JSON.stringify(data, null, 2);
+        this.queryResponse.className = 'response success';
+    }
+
+    displayQueryError(errorMessage) {
+        this.queryResponseText.textContent = `Error: ${errorMessage}`;
+        this.queryResponse.className = 'response error';
+    }
 }
 
-const server1 = new Server1();
-server1.start();
+// creating instance and initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', function() {
+    const client = new PatientDBClient();
+    client.init();
+});

@@ -36,7 +36,7 @@ class Server2 {
         this.setCORSHeaders(req, resp);
 
         if (req.method === 'OPTIONS') {
-            resp.writeHead(204, {});
+            resp.writeHead(200, {'Content-Type': 'text/plain'});
             resp.end();
             return;
         }
