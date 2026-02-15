@@ -5,7 +5,8 @@ const STRINGS = {
     INSERT_SUCCESS: "Inserted patients",
     INSERT_FAILURE: "Failed to insert patients",
     SERVER_ERROR: "Internal Server Error",
-    NOT_FOUND: "Not Found"
+    NOT_FOUND: "Not Found",
+    UNKNOWN_ERROR: "Unknown error occurred"
 };
 
 export default STRINGS;

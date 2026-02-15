@@ -24,7 +24,6 @@ class Server2 {
   // add CORS headers to allow cross-origin requests from Server1
   setCORSHeaders(req, resp) {
     const origin = req.headers.origin;
-    console.log("Incoming Origin:", req.headers.origin);
 
     // allow requests from allowed origins
     if (this.allowedOrigins.includes(origin)) {
@@ -45,13 +44,14 @@ class Server2 {
     }
 
     // handle GET req
-    if (req.method === "GET" && req.url.startsWith("/api/v1/sql")) {
+    if (req.method === "GET" && req.url.startsWith("lab4/api/v1/sql")) {
       try {
         const sql = url.parse(req.url, true).query;
         const result = await runSelectQuery(sql.queryStatement);
         resp.writeHead(200, { "Content-Type": "application/json" });
         return resp.end(JSON.stringify(result));
-      } catch (error) {
+      } 
+      catch (error) {
         resp.writeHead(400, { "Content-Type": "application/json" });
         return resp.end(
           JSON.stringify({
@@ -62,7 +62,7 @@ class Server2 {
     }
 
     // handle POST req
-    else if (req.method == "POST" && req.url === "/api/v1/insert") {
+    else if (req.method == "POST" && req.url === "/lab4/api/v1/insert") {
       try {
         await insertPatients();
 

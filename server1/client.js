@@ -9,7 +9,7 @@ class PatientDBClient {
         this.insertResponseText = null;
         this.queryResponse = null;
         this.queryResponseText = null;
-        this.server2URL = 'https://four537lab4-vg9m.onrender.com';
+        this.server2URL = process.env.SERVER2_URL;
     }
 
     // initialize the client and set up event listeners
@@ -62,15 +62,9 @@ class PatientDBClient {
 
             const response = await this.sendQueryRequest(query);
 
-            console.log("Status:", response.status);
-            console.log("OK:", response.ok);
-
             const data = await response.json();
-
-
-
             if (response.status === 400) {
-                throw new Error(data.error || 'Unknown error');
+                throw new Error(data.error || process.env.UNKNOWN_ERROR);
             }
            
             this.displayQueryResponse(data);
@@ -82,7 +76,7 @@ class PatientDBClient {
 
     // send POST request to insert patients
     async sendInsertRequest() {
-        const url = `${this.server2URL}/api/v1/insert`;
+        const url = `${this.server2URL}lab4/api/v1/insert`;
         return await fetch(url, {
             method: 'POST'
         });
@@ -90,7 +84,7 @@ class PatientDBClient {
 
     // send GET request with SQL query
     async sendQueryRequest(query) {
-        const url = `${this.server2URL}/api/v1/sql?queryStatement=${encodeURIComponent(query)}`;
+        const url = `${this.server2URL}lab4/api/v1/sql?queryStatement=${encodeURIComponent(query)}`;
         return await fetch(url);
     }
 
