@@ -9,7 +9,7 @@ class PatientDBClient {
         this.insertResponseText = null;
         this.queryResponse = null;
         this.queryResponseText = null;
-        this.server2URL = process.env.SERVER2_URL;
+        this.server2URL = 'https://four537lab4-vg9m.onrender.com';
     }
 
     // initialize the client and set up event listeners
@@ -64,7 +64,7 @@ class PatientDBClient {
 
             const data = await response.json();
             if (response.status === 400) {
-                throw new Error(data.error || process.env.UNKNOWN_ERROR);
+                throw new Error(data.error || STRINGS.UNKNOWN_ERROR);
             }
            
             this.displayQueryResponse(data);
