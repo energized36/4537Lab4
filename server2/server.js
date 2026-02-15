@@ -44,7 +44,7 @@ class Server2 {
     }
 
     // handle GET req
-    if (req.method === "GET" && req.url.startsWith("lab4/api/v1/sql")) {
+    if (req.method === "GET" && req.url.startsWith("/lab4/api/v1/sql")) {
       try {
         const sql = url.parse(req.url, true).query;
         const result = await runSelectQuery(sql.queryStatement);
