@@ -76,7 +76,7 @@ class PatientDBClient {
 
     // send POST request to insert patients
     async sendInsertRequest() {
-        const url = `${this.server2URL}lab4/api/v1/insert`;
+        const url = `${this.server2URL}/lab4/api/v1/insert`;
         return await fetch(url, {
             method: 'POST'
         });
@@ -84,7 +84,7 @@ class PatientDBClient {
 
     // send GET request with SQL query
     async sendQueryRequest(query) {
-        const url = `${this.server2URL}lab4/api/v1/sql?queryStatement=${encodeURIComponent(query)}`;
+        const url = `${this.server2URL}/lab4/api/v1/sql?queryStatement=${encodeURIComponent(query)}`;
         return await fetch(url);
     }
 
